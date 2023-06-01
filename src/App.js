@@ -39,7 +39,7 @@ function App() {
           return (
           <div className="list" key={i}>
              <h4 onClick={()=>{
-                setModal(!modal);
+                setModal(!modal , 글제목[i]);
               }}> { 글제목[i] } 
               <span onClick={ ()=>{
                   let copy = [...따봉];
@@ -53,7 +53,7 @@ function App() {
         })
       }
       {
-        modal ? <Modal titleChang={글제목변경} title={글제목}/> : '' 
+        modal ? <Modal titleChang={글제목변경} title={글제목} selected/> : '' 
       }
          
     </div>
@@ -61,17 +61,27 @@ function App() {
 }
 
 function Modal(props){
-  return ( 
+  
+  return (
     <div className="modal">
-        <h4>{props.title[0]}</h4>
-        <p>날짜</p>
-        <p>상세내용</p>
-        <butto onClick={ () => {
-          let copy = [...props.title];
-          copy[0] = '여자 코트 추천';
-          props.titleChang(copy);
-        }}>글수정</butto>
-      </div>
+      {
+        props.title.map(function(name,idx){
+          return(
+            <>
+            <h4>{name}</h4>
+            <p>날짜</p>
+            <p>상세내용</p>
+            <button onClick={ () => {
+              let copy = [...props.title];
+              copy[0] = '여자 코트 추천';
+              props.titleChang(copy);
+            }}>글수정</button>
+            </>
+          );
+        })
+      }
+        
+    </div>
   );
 }
 export default App;
