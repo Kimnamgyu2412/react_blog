@@ -1,13 +1,15 @@
 
 import './App.css';
 import { useState } from 'react';
+import React from 'react';
 
 function App() {
 
   let [글제목,글제목변경] = useState(['남자 코트 추천','강남 우동 맛집', '파이썬 독학']);
   let [따봉,따봉변경] = useState([0,0,0]); 
   let [modal,setModal] = useState(false);
-06  let [selectedTitle,setSelectedTitle] = useState(0);
+  let [selectedTitle,setSelectedTitle] = useState(0);
+  let [입력값, 입력값변경] = useState('');
 
   return (
     <div className="App">
@@ -36,6 +38,8 @@ function App() {
           }}>{글제목[2]}</h4>
         <p>2월 17일 발행</p>
       </div> */}
+      
+      
       {
         글제목.map(function(a, i){
           return (
@@ -44,22 +48,43 @@ function App() {
                 setSelectedTitle(i);
                 setModal(!modal);
               }}> { 글제목[i] } 
-              <span onClick={ ()=>{
+              <span onClick={ (e)=>{
                   let copy = [...따봉];
-                  copy[i] = copy[i] + 1; 
-                  따봉변경(copy)
+                  copy[i] = copy[i] + 1;
+                  e.stopPropagation();  
+                  따봉변경(copy); 
               } } >👍</span> 
               { 따봉[i] }
+              <input className='delete-div' type='button' value="삭제" 
+                    onClick={
+                      ()=>{
+                          // let copy = [...글제목];
+                          // copy.splice(i,i+1);
+                          // 글제목변경(copy);
+                          delete 글제목[i];
+                      }
+                    }/>
             </h4>
             <p>2월 18일 발행</p>
           </div> )
         })
       }
+
+      <input type='text' onChange={(e)=>{ 입력값변경(e.target.value) }} />
+      <input type='button' value="글발행" 
+          onClick={
+            ()=>{
+                  let copy = [...글제목];
+                  copy.unshift(입력값);
+                  글제목변경(copy);
+                }
+          } />
       {
         modal ? <Modal titleChang={글제목변경} title={글제목} modalTitle={selectedTitle}/> : '' 
       }
-         
+      <Modal2></Modal2>
     </div>
+
   );
 }
 
@@ -78,4 +103,20 @@ function Modal(props){
     </div>
   );
 }
+
+class Modal2 extends React.Component{
+  constructor(){
+    super();
+    this.state = {
+      name : 'kim',
+      age : 20
+    }
+  }
+  render(){
+    return(
+      <div>안녕 {this.state.name}</div>
+    )
+  }
+}
+
 export default App;
